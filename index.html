@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SB2 Motors - Concessionnaire Moto | Cap-Haïtien</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --red:#D22B2B;--dark:#0a0a0a;--darker:#050505;--gold:#C9A84C;
+    --white:#F5F5F0;--gray:#888;--card-bg:#111;--border:#1e1e1e;
+  }
+  body{background:var(--darker);color:var(--white);font-family:'Outfit',sans-serif;overflow-x:hidden}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 40px;background:rgba(5,5,5,0.92);backdrop-filter:blur(12px);border-bottom:1px solid #1a1a1a}
+  .logo{font-family:'Bebas Neue',cursive;font-size:32px;letter-spacing:4px;color:var(--white)}
+  .logo span{color:var(--red)}
+  .nav-links{display:flex;gap:32px}
+  .nav-links a{color:var(--gray);text-decoration:none;font-size:13px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;transition:color .2s}
+  .nav-links a:hover{color:var(--white)}
+  .nav-cta{background:var(--red);color:#fff;border:none;padding:10px 24px;font-family:'Outfit',sans-serif;font-weight:600;font-size:13px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s}
+  .nav-cta:hover{background:#b52222}
+
+  /* HERO */
+  .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 40px 60px;position:relative;overflow:hidden}
+  .hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 60%,#1a0505 0%,var(--darker) 70%)}
+  .hero-grid{position:absolute;inset:0;background-image:linear-gradient(#ffffff08 1px,transparent 1px),linear-gradient(90deg,#ffffff08 1px,transparent 1px);background-size:60px 60px;opacity:.4}
+  .hero-accent{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(210,43,43,.15) 0%,transparent 70%);pointer-events:none}
+  .eyebrow{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:24px;position:relative}
+  .hero h1{font-family:'Bebas Neue',cursive;font-size:clamp(72px,12vw,140px);line-height:.9;letter-spacing:2px;position:relative;margin-bottom:8px}
+  .hero h1 em{color:var(--red);font-style:normal}
+  .hero-sub{font-size:clamp(28px,4vw,48px);font-family:'Bebas Neue',cursive;letter-spacing:4px;color:var(--gray);margin-bottom:32px;position:relative}
+  .hero p{max-width:520px;color:#aaa;font-size:15px;line-height:1.7;margin-bottom:40px;position:relative}
+  .hero-btns{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;position:relative}
+  .btn-primary{background:var(--red);color:#fff;border:none;padding:16px 40px;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .25s;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%)}
+  .btn-primary:hover{background:#b52222;transform:translateY(-2px)}
+  .btn-outline{background:transparent;color:var(--white);border:1px solid #333;padding:16px 40px;font-family:'Outfit',sans-serif;font-weight:600;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .25s}
+  .btn-outline:hover{border-color:var(--white)}
+  .scroll-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gray);display:flex;flex-direction:column;align-items:center;gap:8px}
+  .scroll-arrow{width:1px;height:40px;background:linear-gradient(var(--red),transparent);margin:0 auto}
+
+  /* STATS */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+  .stat{background:var(--card-bg);padding:32px;text-align:center}
+  .stat-num{font-family:'Bebas Neue',cursive;font-size:48px;color:var(--red);line-height:1}
+  .stat-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-top:4px}
+
+  /* SECTION HEADER */
+  .section{padding:80px 40px}
+  .section-tag{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:12px}
+  .section-title{font-family:'Bebas Neue',cursive;font-size:clamp(36px,5vw,64px);letter-spacing:2px;margin-bottom:8px}
+  .section-subtitle{color:var(--gray);font-size:14px;letter-spacing:1px}
+
+  /* CATALOGUE / SLIDER */
+  .catalogue{background:var(--dark);padding:80px 0}
+  .catalogue-header{padding:0 40px 48px;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px}
+  .slider-controls{display:flex;gap:8px}
+  .ctrl{width:44px;height:44px;border:1px solid #333;background:transparent;color:var(--white);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:'Outfit',sans-serif}
+  .ctrl:hover{background:var(--red);border-color:var(--red)}
+  .slider-track{overflow:hidden;padding:0 40px}
+  .slider-inner{display:flex;gap:20px;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+
+  /* MOTO CARD */
+  .moto-card{flex:0 0 280px;background:var(--card-bg);border:1px solid var(--border);overflow:hidden;position:relative;cursor:pointer;transition:all .3s}
+  .moto-card:hover{border-color:#333;transform:translateY(-4px)}
+  .moto-card:hover .card-overlay{opacity:1}
+  .card-img{width:100%;height:200px;object-fit:contain;padding:20px;background:#0d0d0d;display:flex;align-items:center;justify-content:center;font-size:72px}
+  .card-body{padding:20px}
+  .card-brand{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:4px}
+  .card-name{font-family:'Bebas Neue',cursive;font-size:22px;letter-spacing:1px;margin-bottom:8px}
+  .card-specs{display:flex;gap:12px;margin-bottom:16px}
+  .spec{font-size:11px;color:var(--gray)}
+  .card-price{font-family:'Bebas Neue',cursive;font-size:28px;color:var(--gold)}
+  .card-price span{font-size:13px;font-family:'Outfit',sans-serif;color:var(--gray);font-weight:400}
+  .card-overlay{position:absolute;inset:0;background:rgba(210,43,43,.08);border:1px solid var(--red);pointer-events:none;opacity:0;transition:opacity .3s}
+  .badge{position:absolute;top:12px;left:12px;background:var(--red);color:#fff;font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:700;padding:4px 10px}
+
+  /* BRANDS */
+  .brands{background:var(--darker);padding:60px 40px;text-align:center;border-top:1px solid var(--border)}
+  .brands-title{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gray);margin-bottom:32px}
+  .brands-grid{display:flex;flex-wrap:wrap;gap:0;justify-content:center;border:1px solid var(--border)}
+  .brand-item{flex:1 1 120px;padding:24px 20px;text-align:center;border:1px solid var(--border);font-family:'Bebas Neue',cursive;font-size:18px;letter-spacing:2px;color:#444;transition:all .25s;cursor:pointer}
+  .brand-item:hover{color:var(--white);background:var(--card-bg)}
+
+  /* WHY US */
+  .why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--border);margin-top:48px}
+  .why-item{background:var(--card-bg);padding:32px;position:relative;overflow:hidden}
+  .why-item::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--red)}
+  .why-num{font-family:'Bebas Neue',cursive;font-size:72px;color:#1a1a1a;position:absolute;bottom:-10px;right:12px;line-height:1}
+  .why-icon{font-size:28px;margin-bottom:16px}
+  .why-title{font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;color:var(--white)}
+  .why-text{font-size:13px;color:var(--gray);line-height:1.6}
+
+  /* CTA BAND */
+  .cta-band{background:var(--red);padding:64px 40px;text-align:center}
+  .cta-band h2{font-family:'Bebas Neue',cursive;font-size:clamp(36px,5vw,64px);letter-spacing:3px;color:#fff;margin-bottom:8px}
+  .cta-band p{color:rgba(255,255,255,.7);font-size:14px;margin-bottom:32px;letter-spacing:.5px}
+  .btn-white{background:#fff;color:var(--red);border:none;padding:16px 48px;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%)}
+  .btn-white:hover{background:var(--dark);color:#fff}
+
+  /* CONTACT */
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:48px}
+  .contact-info p{color:var(--gray);font-size:14px;line-height:1.8;margin-bottom:24px}
+  .contact-detail{display:flex;align-items:center;gap:12px;margin-bottom:16px;font-size:14px}
+  .contact-detail .icon{width:36px;height:36px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--red);font-size:16px;flex-shrink:0}
+  .contact-form{display:flex;flex-direction:column;gap:12px}
+  .contact-form input,
+  .contact-form select,
+  .contact-form textarea{background:#0d0d0d;border:1px solid var(--border);color:var(--white);padding:14px 16px;font-family:'Outfit',sans-serif;font-size:14px;outline:none;transition:border .2s;width:100%}
+  .contact-form input:focus,
+  .contact-form select:focus,
+  .contact-form textarea:focus{border-color:#444}
+  .contact-form select option{background:#0d0d0d}
+  .contact-form textarea{resize:vertical;min-height:100px}
+
+  /* FOOTER */
+  footer{background:var(--darker);border-top:1px solid var(--border);padding:40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+  .footer-logo{font-family:'Bebas Neue',cursive;font-size:24px;letter-spacing:3px}
+  .footer-logo span{color:var(--red)}
+  footer p{color:var(--gray);font-size:12px;letter-spacing:1px}
+
+  /* LANGUAGE TOGGLE */
+  .lang-toggle{display:flex;gap:2px;background:#1a1a1a;padding:2px;border-radius:2px}
+  .lang-btn{padding:5px 12px;font-size:11px;font-weight:600;letter-spacing:1px;cursor:pointer;border:none;background:transparent;color:var(--gray);transition:all .2s;font-family:'Outfit',sans-serif}
+  .lang-btn.active{background:var(--red);color:#fff}
+
+  /* SUCCESS */
+  #form-success{display:none;color:#4CAF50;font-size:13px;text-align:center;padding:8px}
+
+  /* MOBILE */
+  @media(max-width:768px){
+    nav{padding:14px 20px}
+    .nav-links{display:none}
+    .hero{padding:80px 20px 60px}
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .section{padding:60px 20px}
+    .catalogue{padding:60px 0}
+    .catalogue-header{padding:0 20px 32px}
+    .slider-track{padding:0 20px}
+    .contact-grid{grid-template-columns:1fr}
+    footer{flex-direction:column;text-align:center;padding:24px 20px}
+    .scroll-hint{display:none}
+    .cta-band{padding:48px 20px}
+    .brands{padding:48px 20px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== NAV ========== -->
+<nav>
+  <div class="logo">SB2 <span>MOTORS</span></div>
+  <div class="nav-links">
+    <a href="#catalogue" id="nav-catalogue">Catalogue</a>
+    <a href="#brands"    id="nav-brands">Marques</a>
+    <a href="#why"       id="nav-why">Pourquoi Nous</a>
+    <a href="#contact"   id="nav-contact">Contact</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+      <button class="lang-btn"        onclick="setLang('ht')">KR</button>
+    </div>
+    <button class="nav-cta" id="nav-cta-btn">Acheter</button>
+  </div>
+</nav>
+
+<!-- ========== HERO ========== -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-accent"></div>
+  <p class="eyebrow" id="hero-eyebrow">Concessionnaire Officiel · Cap-Haïtien</p>
+  <h1 id="hero-h1">LIBERTÉ<br><em>SUR DEUX</em><br>ROUES</h1>
+  <p class="hero-sub" id="hero-sub">VOTRE MOTO. VOTRE ROUTE.</p>
+  <p id="hero-desc">SB2 Motors — le plus grand choix de motos neuves au nord d'Haïti. Nipponia, Yamaha, Honda, Gato, Loncin et bien plus.</p>
+  <div class="hero-btns">
+    <button class="btn-primary" id="hero-btn1" onclick="document.getElementById('catalogue').scrollIntoView({behavior:'smooth'})">Voir le catalogue</button>
+    <button class="btn-outline"  id="hero-btn2" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Nous contacter</button>
+  </div>
+  <div class="scroll-hint">
+    <span style="font-size:10px;letter-spacing:2px" id="scroll-txt">DÉFILER</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- ========== STATS ========== -->
+<div class="stats">
+  <div class="stat"><div class="stat-num">20+</div><div class="stat-label" id="stat1">Modèles disponibles</div></div>
+  <div class="stat"><div class="stat-num">8</div>  <div class="stat-label" id="stat2">Marques reconnues</div></div>
+  <div class="stat"><div class="stat-num">100%</div><div class="stat-label" id="stat3">Motos neuves</div></div>
+  <div class="stat"><div class="stat-num">1</div>  <div class="stat-label" id="stat4">Adresse. Cap-Haïtien</div></div>
+</div>
+
+<!-- ========== CATALOGUE / SLIDER ========== -->
+<section class="catalogue" id="catalogue">
+  <div class="catalogue-header">
+    <div>
+      <div class="section-tag"   id="cat-tag">Notre Flotte</div>
+      <div class="section-title" id="cat-title">TOUTES NOS MOTOS</div>
+      <div class="section-subtitle" id="cat-sub">Glissez pour découvrir tous les modèles</div>
+    </div>
+    <div class="slider-controls">
+      <button class="ctrl" onclick="slide(-1)">&#8592;</button>
+      <button class="ctrl" onclick="slide(1)">&#8594;</button>
+    </div>
+  </div>
+  <div class="slider-track">
+    <div class="slider-inner" id="sliderInner"></div>
+  </div>
+  <div style="display:flex;justify-content:center;gap:6px;margin-top:24px" id="dots"></div>
+</section>
+
+<!-- ========== BRANDS ========== -->
+<section class="brands" id="brands">
+  <div class="brands-title" id="brands-lbl">NOS MARQUES PARTENAIRES</div>
+  <div class="brands-grid">
+    <div class="brand-item">NIPPONIA</div>
+    <div class="brand-item">YAMAHA</div>
+    <div class="brand-item">HONDA</div>
+    <div class="brand-item">GATO</div>
+    <div class="brand-item">LONCIN</div>
+    <div class="brand-item">TAURO</div>
+    <div class="brand-item">PLATINA</div>
+    <div class="brand-item">&amp; PLUS</div>
+  </div>
+</section>
+
+<!-- ========== WHY US ========== -->
+<section class="section" id="why" style="background:var(--dark)">
+  <div class="section-tag"   id="why-tag">Ayè Nou</div>
+  <div class="section-title" id="why-title">POUKISA CHWAZI SB2?</div>
+  <div class="why-grid">
+    <div class="why-item">
+      <div class="why-icon">🏆</div>
+      <div class="why-title" id="why1-t">Kalite Garanti</div>
+      <div class="why-text"  id="why1-d">Tout moto nou yo se nouvo epi soti nan konpayi serye. Garanti fabrik sou chak modèl.</div>
+      <div class="why-num">01</div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">💳</div>
+      <div class="why-title" id="why2-t">Peman Fasil</div>
+      <div class="why-text"  id="why2-d">Nou ofri plan peman ki adapte ak bidjè ou. Depo ki ba, menswalite aksesib.</div>
+      <div class="why-num">02</div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">🔧</div>
+      <div class="why-title" id="why3-t">Sèvis Apre-Vant</div>
+      <div class="why-text"  id="why3-d">Ekip teknik nou disponib pou antretyen ak reparasyon. Pièces de rechange disponib.</div>
+      <div class="why-num">03</div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">📍</div>
+      <div class="why-title" id="why4-t">Sitye Byèn</div>
+      <div class="why-text"  id="why4-d">Bò kote ou nan Okap. Fasilman aksesib, pakin disponib. Vizite nou jodi a.</div>
+      <div class="why-num">04</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CTA BAND ========== -->
+<div class="cta-band">
+  <h2 id="cta-h2">JWENN MOTO RÊV OU A JODI A</h2>
+  <p   id="cta-p">Disponib pou reponn tout kesyon ou. Vizite showroom SB2 Motors.</p>
+  <button class="btn-white" id="cta-btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Kontakte Nou</button>
+</div>
+
+<!-- ========== CONTACT ========== -->
+<section class="section" id="contact" style="background:var(--darker)">
+  <div class="section-tag"   id="contact-tag">Kontakte Nou</div>
+  <div class="section-title" id="contact-title">VIZITE SHOWROOM NAN</div>
+  <div class="contact-grid">
+    <!-- Info -->
+    <div class="contact-info">
+      <p id="contact-desc">Ekip SB2 Motors pare pou akeyi w ak konsèy pèsonalize. Pale avèk yon espesyalis moto nou jodi a.</p>
+      <div class="contact-detail"><div class="icon">📍</div><div id="c-addr">Cap-Haïtien, Nò, Haïti</div></div>
+      <div class="contact-detail"><div class="icon">📞</div><div>+509 — — — —</div></div>
+      <div class="contact-detail"><div class="icon">🕐</div><div id="c-hours">Lundi–Samedi · 8h–18h</div></div>
+      <div class="contact-detail"><div class="icon">📱</div><div>WhatsApp disponib</div></div>
+    </div>
+    <!-- Form -->
+    <div class="contact-form">
+      <input  type="text" id="cf-name" placeholder="Non ou (Nom complet)">
+      <input  type="tel"  placeholder="Telefòn / Téléphone">
+      <select id="cf-model">
+        <option value="">Chwazi yon modèl / Choisir un modèle</option>
+        <option>Nipponia Brio A30</option>
+        <option>Nipponia Brio 110</option>
+        <option>Nipponia Super Coub</option>
+        <option>Nipponia NT 200</option>
+        <option>Nipponia Space 110</option>
+        <option>Yamaha</option>
+        <option>Gato Super Coub</option>
+        <option>Gato CG 150</option>
+        <option>Gato 200</option>
+        <option>Gato 250</option>
+        <option>Honda 150</option>
+        <option>Honda 125</option>
+        <option>Tauro CG 150</option>
+        <option>Platina 100</option>
+        <option>Platina 125</option>
+        <option>Loncin Pruss 200</option>
+        <option>Loncin SX1 150</option>
+        <option>Loncin Dorphine</option>
+        <option>Loncin 3 Roues</option>
+      </select>
+      <textarea id="cf-msg" placeholder="Mesaj ou / Votre message..."></textarea>
+      <button class="btn-primary" id="cf-send" onclick="submitForm()" style="clip-path:none;padding:14px">
+        Voye Mesaj / Envoyer &#8594;
+      </button>
+      <div id="form-success">✅ Mesaj voye! Nou ap kontakte w byento.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  <div class="footer-logo">SB2 <span>MOTORS</span></div>
+  <p id="footer-txt">© 2025 SB2 Motors · Cap-Haïtien, Haïti · Tout dwa rezève</p>
+  <p style="font-size:11px;color:#333">Fè pa SB2 Motors 🇭🇹</p>
+</footer>
+
+<script>
+/* ====================================================
+   DATA — Catalogue motos
+   ==================================================== */
+const motos = [
+  {brand:'NIPPONIA', name:'Brio A30',     cc:'110cc', type:'Scooter',  price:'HTG 85,000',  badge:'NOUVEAU',   emoji:'🛵'},
+  {brand:'NIPPONIA', name:'Brio 110',     cc:'110cc', type:'Urbaine',  price:'HTG 78,000',  badge:'',          emoji:'🏍️'},
+  {brand:'NIPPONIA', name:'Super Coub',   cc:'125cc', type:'Sport',    price:'HTG 95,000',  badge:'POPULAIRE', emoji:'🏍️'},
+  {brand:'NIPPONIA', name:'NT 200',       cc:'200cc', type:'Sport',    price:'HTG 125,000', badge:'',          emoji:'🏍️'},
+  {brand:'NIPPONIA', name:'Space 110',    cc:'110cc', type:'Scooter',  price:'HTG 80,000',  badge:'',          emoji:'🛵'},
+  {brand:'YAMAHA',   name:'Yamaha',       cc:'150cc', type:'Multi',    price:'HTG 145,000', badge:'TOP',       emoji:'🏍️'},
+  {brand:'GATO',     name:'Super Coub',   cc:'125cc', type:'Sport',    price:'HTG 88,000',  badge:'',          emoji:'🏍️'},
+  {brand:'GATO',     name:'CG 150',       cc:'150cc', type:'Trail',    price:'HTG 105,000', badge:'',          emoji:'🏍️'},
+  {brand:'GATO',     name:'Gato 200',     cc:'200cc', type:'Sport',    price:'HTG 130,000', badge:'',          emoji:'🏍️'},
+  {brand:'GATO',     name:'Gato 250',     cc:'250cc', type:'Sport',    price:'HTG 165,000', badge:'PREMIUM',   emoji:'🏍️'},
+  {brand:'HONDA',    name:'Honda 150',    cc:'150cc', type:'Classique',price:'HTG 155,000', badge:'',          emoji:'🏍️'},
+  {brand:'HONDA',    name:'Honda 125',    cc:'125cc', type:'Classique',price:'HTG 120,000', badge:'',          emoji:'🏍️'},
+  {brand:'TAURO',    name:'CG 150',       cc:'150cc', type:'Trail',    price:'HTG 98,000',  badge:'',          emoji:'🏍️'},
+  {brand:'PLATINA',  name:'Platina 100',  cc:'100cc', type:'Urbaine',  price:'HTG 65,000',  badge:'ÉCONOMIQUE',emoji:'🛵'},
+  {brand:'PLATINA',  name:'Platina 125',  cc:'125cc', type:'Urbaine',  price:'HTG 75,000',  badge:'',          emoji:'🛵'},
+  {brand:'LONCIN',   name:'Pruss 200',    cc:'200cc', type:'Sport',    price:'HTG 115,000', badge:'',          emoji:'🏍️'},
+  {brand:'LONCIN',   name:'SX1 150',      cc:'150cc', type:'Trail',    price:'HTG 98,000',  badge:'',          emoji:'🏍️'},
+  {brand:'LONCIN',   name:'Dorphine',     cc:'150cc', type:'Scooter',  price:'HTG 90,000',  badge:'DESIGN',    emoji:'🛵'},
+  {brand:'LONCIN',   name:'3 Roues',      cc:'200cc', type:'Trike',    price:'HTG 180,000', badge:'UNIQUE',    emoji:'🛺'},
+];
+
+/* ====================================================
+   TRANSLATIONS
+   ==================================================== */
+const translations = {
+  fr: {
+    'nav-catalogue': 'Catalogue',
+    'nav-brands':    'Marques',
+    'nav-why':       'Pourquoi Nous',
+    'nav-contact':   'Contact',
+    'nav-cta-btn':   'Acheter',
+    'hero-eyebrow':  'Concessionnaire Officiel · Cap-Haïtien',
+    'hero-h1':       'LIBERTÉ<br><em>SUR DEUX</em><br>ROUES',
+    'hero-sub':      'VOTRE MOTO. VOTRE ROUTE.',
+    'hero-desc':     "SB2 Motors — le plus grand choix de motos neuves au nord d'Haïti. Nipponia, Yamaha, Honda, Gato, Loncin et bien plus.",
+    'hero-btn1':     'Voir le catalogue',
+    'hero-btn2':     'Nous contacter',
+    'scroll-txt':    'DÉFILER',
+    'stat1':  'Modèles disponibles',
+    'stat2':  'Marques reconnues',
+    'stat3':  'Motos neuves',
+    'stat4':  'Adresse. Cap-Haïtien',
+    'cat-tag':   'Notre Flotte',
+    'cat-title': 'TOUTES NOS MOTOS',
+    'cat-sub':   'Glissez pour découvrir tous les modèles',
+    'brands-lbl':'NOS MARQUES PARTENAIRES',
+    'why-tag':   'Nos Avantages',
+    'why-title': 'POURQUOI CHOISIR SB2?',
+    'why1-t': 'Qualité Garantie',
+    'why1-d': "Toutes nos motos sont neuves et issues de marques sérieuses. Garantie fabricant sur chaque modèle.",
+    'why2-t': 'Paiement Facile',
+    'why2-d': "Nous offrons des plans de paiement adaptés à votre budget. Acompte bas, mensualités accessibles.",
+    'why3-t': 'Service Après-Vente',
+    'why3-d': "Notre équipe technique est disponible pour l'entretien et les réparations. Pièces de rechange disponibles.",
+    'why4-t': 'Bien Situé',
+    'why4-d': "Au cœur de Cap-Haïtien, facilement accessible, parking disponible. Venez nous rendre visite.",
+    'cta-h2':  'TROUVEZ LA MOTO DE VOS RÊVES',
+    'cta-p':   'Disponibles pour répondre à toutes vos questions. Visitez le showroom SB2 Motors.',
+    'cta-btn': 'Nous contacter',
+    'contact-tag':   'Nous Trouver',
+    'contact-title': 'VISITEZ NOTRE SHOWROOM',
+    'contact-desc':  "L'équipe SB2 Motors est prête à vous accueillir avec des conseils personnalisés. Parlez à un expert moto dès aujourd'hui.",
+    'c-addr':   'Cap-Haïtien, Nord, Haïti',
+    'c-hours':  'Lundi–Samedi · 8h–18h',
+    'cf-name':  'Votre nom complet',
+    'cf-send':  'Envoyer &#8594;',
+    'footer-txt': '© 2025 SB2 Motors · Cap-Haïtien, Haïti · Tous droits réservés'
+  },
+  ht: {
+    'nav-catalogue': 'Katalòg',
+    'nav-brands':    'Mak',
+    'nav-why':       'Poukisa Nou',
+    'nav-contact':   'Kontakte',
+    'nav-cta-btn':   'Achte',
+    'hero-eyebrow':  'Konsesonè Ofisyèl · Okap',
+    'hero-h1':       'LIBÈTE<br><em>SOU DE</em><br>WOU',
+    'hero-sub':      'MOTO OU. WOU OU.',
+    'hero-desc':     "SB2 Motors — pi gran chwa moto neuf nan nò Ayiti. Nipponia, Yamaha, Honda, Gato, Loncin ak plis ankò.",
+    'hero-btn1':     'Wè katalòg la',
+    'hero-btn2':     'Kontakte nou',
+    'scroll-txt':    'DESANN',
+    'stat1':  'Modèl disponib',
+    'stat2':  'Mak rekonèt',
+    'stat3':  'Moto nèf',
+    'stat4':  'Adrès. Okap',
+    'cat-tag':   'Flo Nou',
+    'cat-title': 'TOUT MOTO NOU YO',
+    'cat-sub':   'Glise pou dekouvri tout modèl yo',
+    'brands-lbl':'MAK PATNÈ NOU YO',
+    'why-tag':   'Ayè Nou',
+    'why-title': 'POUKISA CHWAZI SB2?',
+    'why1-t': 'Kalite Garanti',
+    'why1-d': 'Tout moto nou yo se nouvo epi soti nan konpayi serye. Garanti fabrik sou chak modèl.',
+    'why2-t': 'Peman Fasil',
+    'why2-d': 'Nou ofri plan peman ki adapte ak bidjè ou. Depo ki ba, menswalite aksesib.',
+    'why3-t': 'Sèvis Apre-Vant',
+    'why3-d': 'Ekip teknik nou disponib pou antretyen ak reparasyon. Pièces de rechange disponib.',
+    'why4-t': 'Sitye Byèn',
+    'why4-d': 'Bò kote ou nan Okap. Fasilman aksesib, pakin disponib. Vizite nou jodi a.',
+    'cta-h2':  'JWENN MOTO RÊV OU A JODI A',
+    'cta-p':   'Disponib pou reponn tout kesyon ou. Vizite showroom SB2 Motors.',
+    'cta-btn': 'Kontakte Nou',
+    'contact-tag':   'Kote Nou Ye',
+    'contact-title': 'VIZITE SHOWROOM NAN',
+    'contact-desc':  'Ekip SB2 Motors pare pou akeyi w ak konsèy pèsonalize. Pale avèk yon espesyalis moto nou jodi a.',
+    'c-addr':   'Okap, Nò, Ayiti',
+    'c-hours':  'Lendi–Samdi · 8h–18h',
+    'cf-name':  'Non ou konplè',
+    'cf-send':  'Voye Mesaj &#8594;',
+    'footer-txt': '© 2025 SB2 Motors · Okap, Ayiti · Tout dwa rezève'
+  }
+};
+
+/* ====================================================
+   LANGUAGE SWITCHER
+   ==================================================== */
+let currentLang = 'fr';
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b =>
+    b.classList.toggle('active', b.textContent === lang.toUpperCase())
+  );
+  const t = translations[lang];
+  for (const [id, val] of Object.entries(t)) {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = val;
+  }
+}
+
+/* ====================================================
+   BUILD SLIDER CARDS
+   ==================================================== */
+const inner  = document.getElementById('sliderInner');
+const dotsEl = document.getElementById('dots');
+let pos = 0;
+
+const cardWidth = 300; // card 280 + gap 20
+
+motos.forEach((m, i) => {
+  const card = document.createElement('div');
+  card.className = 'moto-card';
+  card.innerHTML = `
+    ${m.badge ? `<div class="badge">${m.badge}</div>` : ''}
+    <div class="card-img">${m.emoji}</div>
+    <div class="card-body">
+      <div class="card-brand">${m.brand}</div>
+      <div class="card-name">${m.name}</div>
+      <div class="card-specs">
+        <span class="spec">⚡ ${m.cc}</span>
+        <span class="spec">&nbsp;·&nbsp; 📋 ${m.type}</span>
+      </div>
+      <div class="card-price">${m.price} <span>HTG</span></div>
+    </div>
+    <div class="card-overlay"></div>`;
+  inner.appendChild(card);
+
+  const dot = document.createElement('div');
+  dot.style.cssText = `width:6px;height:6px;border-radius:50%;background:${i===0?'var(--red)':'#333'};transition:background .3s;cursor:pointer`;
+  dot.onclick = () => goTo(i);
+  dotsEl.appendChild(dot);
+});
+
+function visCount() {
+  return Math.max(1, Math.floor((window.innerWidth - 80) / cardWidth));
+}
+function goTo(i) {
+  pos = Math.max(0, Math.min(i, motos.length - visCount()));
+  inner.style.transform = `translateX(-${pos * cardWidth}px)`;
+  document.querySelectorAll('#dots div').forEach((d, j) =>
+    d.style.background = j === pos ? 'var(--red)' : '#333'
+  );
+}
+function slide(dir) { goTo(pos + dir); }
+window.addEventListener('resize', () => goTo(Math.min(pos, motos.length - visCount())));
+
+/* Touch swipe */
+let touchX = 0;
+inner.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
+inner.addEventListener('touchend',   e => {
+  const dx = e.changedTouches[0].clientX - touchX;
+  if (Math.abs(dx) > 40) slide(dx < 0 ? 1 : -1);
+}, { passive: true });
+
+/* ====================================================
+   CONTACT FORM
+   ==================================================== */
+function submitForm() {
+  const s = document.getElementById('form-success');
+  s.style.display = 'block';
+  setTimeout(() => { s.style.display = 'none'; }, 4000);
+}
+
+/* ====================================================
+   SMOOTH SCROLL for nav links
+   ==================================================== */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+</script>
+</body>
+</html>
