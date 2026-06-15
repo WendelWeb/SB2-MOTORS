@@ -66,7 +66,8 @@
   .moto-card{flex:0 0 280px;background:var(--card-bg);border:1px solid var(--border);overflow:hidden;position:relative;cursor:pointer;transition:all .3s}
   .moto-card:hover{border-color:#333;transform:translateY(-4px)}
   .moto-card:hover .card-overlay{opacity:1}
-  .card-img{width:100%;height:200px;object-fit:contain;padding:20px;background:#0d0d0d;display:flex;align-items:center;justify-content:center;font-size:72px}
+  .card-img{width:100%;height:200px;object-fit:cover;background:#0d0d0d;display:block}
+  .card-img-fallback{display:flex;align-items:center;justify-content:center;font-size:72px}
   .card-body{padding:20px}
   .card-brand{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:4px}
   .card-name{font-family:'Bebas Neue',cursive;font-size:22px;letter-spacing:1px;margin-bottom:8px}
@@ -327,25 +328,25 @@
    DATA — Catalogue motos
    ==================================================== */
 const motos = [
-  {brand:'NIPPONIA', name:'Brio A30',     cc:'110cc', type:'Scooter',  price:'HTG 85,000',  badge:'NOUVEAU',   emoji:'🛵'},
-  {brand:'NIPPONIA', name:'Brio 110',     cc:'110cc', type:'Urbaine',  price:'HTG 78,000',  badge:'',          emoji:'🏍️'},
-  {brand:'NIPPONIA', name:'Super Coub',   cc:'125cc', type:'Sport',    price:'HTG 95,000',  badge:'POPULAIRE', emoji:'🏍️'},
-  {brand:'NIPPONIA', name:'NT 200',       cc:'200cc', type:'Sport',    price:'HTG 125,000', badge:'',          emoji:'🏍️'},
-  {brand:'NIPPONIA', name:'Space 110',    cc:'110cc', type:'Scooter',  price:'HTG 80,000',  badge:'',          emoji:'🛵'},
-  {brand:'YAMAHA',   name:'Yamaha',       cc:'150cc', type:'Multi',    price:'HTG 145,000', badge:'TOP',       emoji:'🏍️'},
-  {brand:'GATO',     name:'Super Coub',   cc:'125cc', type:'Sport',    price:'HTG 88,000',  badge:'',          emoji:'🏍️'},
-  {brand:'GATO',     name:'CG 150',       cc:'150cc', type:'Trail',    price:'HTG 105,000', badge:'',          emoji:'🏍️'},
-  {brand:'GATO',     name:'Gato 200',     cc:'200cc', type:'Sport',    price:'HTG 130,000', badge:'',          emoji:'🏍️'},
-  {brand:'GATO',     name:'Gato 250',     cc:'250cc', type:'Sport',    price:'HTG 165,000', badge:'PREMIUM',   emoji:'🏍️'},
-  {brand:'HONDA',    name:'Honda 150',    cc:'150cc', type:'Classique',price:'HTG 155,000', badge:'',          emoji:'🏍️'},
-  {brand:'HONDA',    name:'Honda 125',    cc:'125cc', type:'Classique',price:'HTG 120,000', badge:'',          emoji:'🏍️'},
-  {brand:'TAURO',    name:'CG 150',       cc:'150cc', type:'Trail',    price:'HTG 98,000',  badge:'',          emoji:'🏍️'},
-  {brand:'PLATINA',  name:'Platina 100',  cc:'100cc', type:'Urbaine',  price:'HTG 65,000',  badge:'ÉCONOMIQUE',emoji:'🛵'},
-  {brand:'PLATINA',  name:'Platina 125',  cc:'125cc', type:'Urbaine',  price:'HTG 75,000',  badge:'',          emoji:'🛵'},
-  {brand:'LONCIN',   name:'Pruss 200',    cc:'200cc', type:'Sport',    price:'HTG 115,000', badge:'',          emoji:'🏍️'},
-  {brand:'LONCIN',   name:'SX1 150',      cc:'150cc', type:'Trail',    price:'HTG 98,000',  badge:'',          emoji:'🏍️'},
-  {brand:'LONCIN',   name:'Dorphine',     cc:'150cc', type:'Scooter',  price:'HTG 90,000',  badge:'DESIGN',    emoji:'🛵'},
-  {brand:'LONCIN',   name:'3 Roues',      cc:'200cc', type:'Trike',    price:'HTG 180,000', badge:'UNIQUE',    emoji:'🛺'},
+  {brand:'NIPPONIA', name:'Brio A30',     cc:'110cc', type:'Scooter',  price:'HTG 85,000',  badge:'NOUVEAU',   emoji:'🛵', img:'219095'},
+  {brand:'NIPPONIA', name:'Brio 110',     cc:'110cc', type:'Urbaine',  price:'HTG 78,000',  badge:'',          emoji:'🏍️', img:'20093198'},
+  {brand:'NIPPONIA', name:'Super Coub',   cc:'125cc', type:'Sport',    price:'HTG 95,000',  badge:'POPULAIRE', emoji:'🏍️', img:'30888275'},
+  {brand:'NIPPONIA', name:'NT 200',       cc:'200cc', type:'Sport',    price:'HTG 125,000', badge:'',          emoji:'🏍️', img:'30817487'},
+  {brand:'NIPPONIA', name:'Space 110',    cc:'110cc', type:'Scooter',  price:'HTG 80,000',  badge:'',          emoji:'🛵', img:'1192330'},
+  {brand:'YAMAHA',   name:'Yamaha',       cc:'150cc', type:'Multi',    price:'HTG 145,000', badge:'TOP',       emoji:'🏍️', img:'4710874'},
+  {brand:'GATO',     name:'Super Coub',   cc:'125cc', type:'Sport',    price:'HTG 88,000',  badge:'',          emoji:'🏍️', img:'5192248'},
+  {brand:'GATO',     name:'CG 150',       cc:'150cc', type:'Trail',    price:'HTG 105,000', badge:'',          emoji:'🏍️', img:'30706046'},
+  {brand:'GATO',     name:'Gato 200',     cc:'200cc', type:'Sport',    price:'HTG 130,000', badge:'',          emoji:'🏍️', img:'29630138'},
+  {brand:'GATO',     name:'Gato 250',     cc:'250cc', type:'Sport',    price:'HTG 165,000', badge:'PREMIUM',   emoji:'🏍️', img:'30888275'},
+  {brand:'HONDA',    name:'Honda 150',    cc:'150cc', type:'Classique',price:'HTG 155,000', badge:'',          emoji:'🏍️', img:'32129738'},
+  {brand:'HONDA',    name:'Honda 125',    cc:'125cc', type:'Classique',price:'HTG 120,000', badge:'',          emoji:'🏍️', img:'2044867'},
+  {brand:'TAURO',    name:'CG 150',       cc:'150cc', type:'Trail',    price:'HTG 98,000',  badge:'',          emoji:'🏍️', img:'9182748'},
+  {brand:'PLATINA',  name:'Platina 100',  cc:'100cc', type:'Urbaine',  price:'HTG 65,000',  badge:'ÉCONOMIQUE',emoji:'🛵', img:'5192248'},
+  {brand:'PLATINA',  name:'Platina 125',  cc:'125cc', type:'Urbaine',  price:'HTG 75,000',  badge:'',          emoji:'🛵', img:'29630138'},
+  {brand:'LONCIN',   name:'Pruss 200',    cc:'200cc', type:'Sport',    price:'HTG 115,000', badge:'',          emoji:'🏍️', img:'30817487'},
+  {brand:'LONCIN',   name:'SX1 150',      cc:'150cc', type:'Trail',    price:'HTG 98,000',  badge:'',          emoji:'🏍️', img:'30706046'},
+  {brand:'LONCIN',   name:'Dorphine',     cc:'150cc', type:'Scooter',  price:'HTG 90,000',  badge:'DESIGN',    emoji:'🛵', img:'1192330'},
+  {brand:'LONCIN',   name:'3 Roues',      cc:'200cc', type:'Trike',    price:'HTG 180,000', badge:'UNIQUE',    emoji:'🛺', img:'30778957'},
 ];
 
 /* ====================================================
@@ -465,12 +466,20 @@ let pos = 0;
 
 const cardWidth = 300; // card 280 + gap 20
 
+function imgFallback(el, emoji) {
+  el.onerror = null;
+  const d = document.createElement('div');
+  d.className = 'card-img card-img-fallback';
+  d.textContent = emoji;
+  el.replaceWith(d);
+}
+
 motos.forEach((m, i) => {
   const card = document.createElement('div');
   card.className = 'moto-card';
   card.innerHTML = `
     ${m.badge ? `<div class="badge">${m.badge}</div>` : ''}
-    <div class="card-img">${m.emoji}</div>
+    <img class="card-img" src="https://images.pexels.com/photos/${m.img}/pexels-photo-${m.img}.jpeg?auto=compress&cs=tinysrgb&w=600" alt="${m.brand} ${m.name}" loading="lazy" onerror="imgFallback(this,'${m.emoji}')">
     <div class="card-body">
       <div class="card-brand">${m.brand}</div>
       <div class="card-name">${m.name}</div>
